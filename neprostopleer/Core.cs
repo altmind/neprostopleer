@@ -8,11 +8,14 @@ using System.IO;
 using System.Threading;
 using System.Net;
 using System.Runtime.InteropServices;
+using neprostopleer.Cores;
 
 namespace neprostopleer
 {
     class Core
     {
+        public LoggingCore loggingCore = new LoggingCore();
+
         private bool initialized = false;
         private int stream = 0;
         private float volume = 0.33f;
@@ -21,38 +24,14 @@ namespace neprostopleer
         private long contentLength;
         private long seekpos = 0;
 
-        public void addToLog(Exception e)
-        {
-            addToLog(e.ToString(), true);
-        }
-
-        public void addToLog(String s)
-        {
-            addToLog(s,true);
-        }
-
-        public void addToLog(String s, bool showWindow)
-        {
-            if (Program.logWindow == null)
-                Program.logWindow = new LogWindow();
-            Program.logWindow.Text += s + Environment.NewLine;
-            if (showWindow)
-            {
-                Program.logWindow.Show();
-            }
-        }
-
-        public void processException(Exception e)
-        {
-            addToLog(e.Message,true);
-        }
+        
 
         private void FillMemoryStream()
         {
             try
             {
-                //HttpWebRequest req = (HttpWebRequest)WebRequest.Create(@"http://altio.us/files/shapeshifter-southern_lights-feat_kp.mp3");
-                HttpWebRequest req = (HttpWebRequest)WebRequest.Create(@"http://192.168.100.2/ThePretenders-10BreakUpTheConcrete.mp3");
+                HttpWebRequest req = (HttpWebRequest)WebRequest.Create(@"http://altio.us/files/Dubfire_-_I_Feel_Speed.mp3");
+                //HttpWebRequest req = (HttpWebRequest)WebRequest.Create(@"http://192.168.100.2/ThePretenders-10BreakUpTheConcrete.mp3");
             
                 this.contentLength = req.GetResponse().ContentLength;
                 Stream stream = req.GetResponse().GetResponseStream();
@@ -66,7 +45,7 @@ namespace neprostopleer
             }
             catch (Exception ex)
             {
-                Program.core.addToLog(ex);
+                Program.core.loggingCore.addToLog(ex);
             }
         }
 
@@ -94,7 +73,7 @@ namespace neprostopleer
                 t.Start();
                 
                 playFromMemoryStream = new MemoryStream();
-                playFromMemoryStream.Seek(0, SeekOrigin.Begin);
+                //playFromMemoryStream.Seek(0, SeekOrigin.Begin);
                 myStreamCreateUser = new BASS_FILEPROCS(
                     new FILECLOSEPROC(MyFileProcUserClose),
                     new FILELENPROC(MyFileProcUserLength),
@@ -125,13 +104,19 @@ namespace neprostopleer
         {
             //if (_fs == null)
             //    return 0;
-            if (!successiveCalls)
-            {
-                playFromMemoryStream.Seek(0, SeekOrigin.Begin);
-                successiveCalls = true;
-            }
+            //if (!successiveCalls)
+            //{
+            //    playFromMemoryStream.Seek(0, SeekOrigin.Begin);
+            //    successiveCalls = true;
+            //}
             try
             {
+                if (seekpos != 0)
+                {
+                    playFromMemoryStream.Seek(seekpos, SeekOrigin.Begin);
+                    seekpos = 0;
+                }
+
                 // at first we need to create a byte[] with the size of the requested length
                 byte[] data = new byte[length];
                 // read the file into data
@@ -154,7 +139,11 @@ namespace neprostopleer
         {
             try
             {
-                playFromMemoryStream.Seek(offset, SeekOrigin.Begin);
+                if (offset >= contentLength)
+                {
+                    return false;
+                }
+                seekpos = offset;
                 return true;
             }
             catch (Exception e)

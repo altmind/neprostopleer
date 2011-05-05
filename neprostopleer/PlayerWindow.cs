@@ -29,7 +29,7 @@ namespace neprostopleer
             }
             catch (Exception ex)
             {
-                Program.core.processException(ex);
+                Program.core.loggingCore.processException(ex);
             }
         }
 

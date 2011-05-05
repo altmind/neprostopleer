@@ -52,6 +52,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Core.cs" />
+    <Compile Include="Cores\FetchingCore.cs" />
+    <Compile Include="Cores\LoggingCore.cs" />
     <Compile Include="LogWindow.cs">
       <SubType>Form</SubType>
     </Compile>
