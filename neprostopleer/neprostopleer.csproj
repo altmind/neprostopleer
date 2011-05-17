@@ -39,8 +39,18 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>ref\Bass.Net.dll</HintPath>
     </Reference>
+    <Reference Include="CommonLibrary">
+      <HintPath>ref\CommonLibrary.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Data.SQLite">
+      <HintPath>ref\sqlite\bin\System.Data.SQLite.DLL</HintPath>
+    </Reference>
+    <Reference Include="System.Data.SQLite.Linq">
+      <HintPath>ref\sqlite\bin\System.Data.SQLite.Linq.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Management" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -51,9 +61,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AppSettings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>AppSettings.settings</DependentUpon>
+    </Compile>
     <Compile Include="Core.cs" />
+    <Compile Include="Cores\CoreDataProvider.cs" />
+    <Compile Include="Cores\CoreProstopleerWebServices.cs" />
+    <Compile Include="Cores\CoreStorageAccess.cs" />
+    <Compile Include="Cores\CoreStreamer.cs" />
     <Compile Include="Cores\FetchingCore.cs" />
-    <Compile Include="Cores\LoggingCore.cs" />
+    <Compile Include="Cores\CoreLogging.cs" />
+    <Compile Include="Entities\DB\Track.cs" />
     <Compile Include="LogWindow.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -86,6 +106,10 @@
       <DesignTime>True</DesignTime>
     </Compile>
     <None Include="app.config" />
+    <None Include="AppSettings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>AppSettings.Designer.cs</LastGenOutput>
+    </None>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

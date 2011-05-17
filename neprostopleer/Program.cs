@@ -2,14 +2,20 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
+using neprostopleer.Cores;
 
 namespace neprostopleer
 {
     static class Program
     {
-        public static Core core = null;
+        //public static Core core = null;
         public static PlayerWindow playerWindow = null;
         public static LogWindow logWindow = null;
+        public static CoreProstopleerWebServices prostopleerWebServices = new CoreProstopleerWebServices();
+        public static CoreStreamer streamer = new CoreStreamer();
+        public static CoreDataProvider dataProvider = new CoreDataProvider();
+        public static CoreLogging logging = new CoreLogging();
+        public static CoreStorageAccess storage = new CoreStorageAccess();
         /// <summary>
         /// The main entry point for the application.
         /// </summary>

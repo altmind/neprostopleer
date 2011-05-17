@@ -14,7 +14,7 @@ namespace neprostopleer
 {
     class Core
     {
-        public LoggingCore loggingCore = new LoggingCore();
+        public CoreLogging loggingCore = new CoreLogging();
 
         private bool initialized = false;
         private int stream = 0;
@@ -45,7 +45,7 @@ namespace neprostopleer
             }
             catch (Exception ex)
             {
-                Program.core.loggingCore.addToLog(ex);
+                Program.logging.addToLog(ex);
             }
         }
 
