@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Net;
+using System.IO;
+using System.Windows.Forms;
 
 namespace neprostopleer.Cores
 {
@@ -18,15 +20,18 @@ namespace neprostopleer.Cores
             {
                 if (_cookie == null)
                 {
+                    string postdata = "return_url=&login=altmind&password=";
                     HttpWebRequest req = (HttpWebRequest)WebRequest.Create(PP_URI_LOGIN);
-                    Stream stream = req.GetResponse().GetResponseStream();
+                    req.Method = "POST";
+                    byte[] byteArray = Encoding.UTF8.GetBytes(postdata);
+                    req.ContentType = "application/x-www-form-urlencoded";
 
-                    byte[] data = new byte[4096];
-                    int read;
-                    while ((read = stream.Read(data, 0, data.Length)) > 0)
-                    {
-                        stream.Write(data, 0, read);
-                    }
+                    req.ContentLength = byteArray.Length;
+                    req.GetRequestStream().Write(byteArray, 0, byteArray.Length);
+                    WebResponse res = req.GetResponse();
+                    MessageBox.Show(res.Headers["Set-Cookie"]);
+                    Stream stream = res.GetResponseStream();
+
                 }
             }
             catch (Exception e)

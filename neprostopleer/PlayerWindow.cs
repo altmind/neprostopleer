@@ -61,5 +61,10 @@ namespace neprostopleer
         {
             Program.storage.InitializeDatabaseAccess();
         }
+
+        private void mainNextButton_Click(object sender, EventArgs e)
+        {
+            Program.prostopleerWebServices.InitializeWebServices();
+        }
     }
 }

@@ -27,7 +27,7 @@ namespace neprostopleer.Cores
         {
             if (Program.logWindow == null)
                 Program.logWindow = new LogWindow();
-            Program.logWindow.Text += s + Environment.NewLine;
+            Program.logWindow.textBox1.Text += s + Environment.NewLine;
             if (showWindow)
             {
                 Program.logWindow.Show();

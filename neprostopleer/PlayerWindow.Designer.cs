@@ -113,6 +113,7 @@
             this.mainNextButton.Size = new System.Drawing.Size(32, 25);
             this.mainNextButton.TabIndex = 3;
             this.mainNextButton.UseVisualStyleBackColor = true;
+            this.mainNextButton.Click += new System.EventHandler(this.mainNextButton_Click);
             // 
             // mainArtistLabel
             // 
