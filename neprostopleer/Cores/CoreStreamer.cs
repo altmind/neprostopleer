@@ -9,12 +9,13 @@ using System.Data.SQLite;
 using neprostopleer.Entities.DB;
 using System.Threading;
 using System.Net;
+using neprostopleer.Util;
 
 namespace neprostopleer.Cores
 {
     class CoreStreamer
     {
-        
+
         private IDictionary<string, Stream> currentlyFetching;
 
 
@@ -24,27 +25,29 @@ namespace neprostopleer.Cores
             currentlyFetching = new Dictionary<string, Stream>();
         }
 
+
         public Stream GetStreamForId(string id)
         {
-            Track t = null;
-            using (SQLiteCommand fetchcommand = Program.storage.GetCommand("SELECT ID, STATE, DISKLOCATION, FETCHTIME FROM TRACKS"))
-            {
-                using (SQLiteDataReader reader = fetchcommand.ExecuteReader())
-                {
-                    Int64 data_fetchtime = reader.GetInt64(reader.GetOrdinal("FETCHTIME"));
-                    string data_id = reader.GetString(reader.GetOrdinal("ID"));
-                    string data_state = reader.GetString(reader.GetOrdinal("STATE"));
-                    string data_disklocation = reader.GetString(reader.GetOrdinal("DISKLOCATION"));
-                    t = new Track(data_id, data_state, data_disklocation, data_fetchtime);
-                }
-            }
+            return GetStreamForId(id, false);
+        }
+
+        public Stream GetStreamForId(string id, bool prefetchOnly)
+        {
+            Track t = Program.daos.trackDAO.getTrackById(id);
+
             if (t != null && "DOWNLOADED".Equals(t.state) && File.Exists(t.disklocation))
             {
-                return new FileStream(t.disklocation, FileMode.Open);
+                if (prefetchOnly)
+                    return null;
+                else
+                    return new FileStream(t.disklocation, FileMode.Open);
             }
             if (t != null && "DOWNLOADING".Equals(t.state) && currentlyFetching.ContainsKey(id))
             {
-                return currentlyFetching[id];
+                if (prefetchOnly)
+                    return null;
+                else
+                    return currentlyFetching[id];
             }
             else
             {
@@ -59,7 +62,7 @@ namespace neprostopleer.Cores
              */
             AutoResetEvent evt = new AutoResetEvent(false);
             Thread t = new Thread(new ParameterizedThreadStart(ThreadedDownloader));
-            t.Start(new Tuple<string, Uri, AutoResetEvent>(id,uri,evt));
+            t.Start(new Tuple<string, Uri, AutoResetEvent>(id, uri, evt));
             evt.WaitOne();
             return currentlyFetching[id];
         }
@@ -71,20 +74,73 @@ namespace neprostopleer.Cores
             Uri uri = val.Item2;
             AutoResetEvent evt = val.Item3;
 
+            MemoryStream outStream = new MemoryStream();
+
+            currentlyFetching[id] = outStream;
+            evt.Set();
+
             HttpWebRequest req = (HttpWebRequest)WebRequest.Create(uri);
             Stream stream = req.GetResponse().GetResponseStream();
 
-            evt.Set();
-
             //long contentLength = req.GetResponse().ContentLength;
 
-            byte[] data = new byte[4096];
-            int read;
-            while ((read = stream.Read(data, 0, data.Length)) > 0)
+            try
             {
-                stream.Write(data, 0, read);
+                byte[] data = new byte[4096];
+                int read;
+                while ((read = stream.Read(data, 0, data.Length)) > 0)
+                {
+                    outStream.Write(data, 0, read);
+                }
+
+                stream.Close();
+                WriteStreamForIDToDisk(id);
             }
-            
+            finally
+            {
+                if (stream != null)
+                    stream.Close();
+            }
+
+        }
+
+        private string GetFilenameForTrackID(string id)
+        {
+            return Path.Combine(Path.GetTempPath(), id + ".mp3");
+        }
+        private void WriteStreamForIDToDisk(string id)
+        {
+            if (currentlyFetching.ContainsKey(id))
+            {
+                MemoryStream stream = (MemoryStream)currentlyFetching[id];
+
+                String fileName=GetFilenameForTrackID(id);
+
+                
+                using (FileStream fileStream = File.OpenWrite(fileName))
+                {
+
+                    //byte[] buffer = new byte[4096];
+                    //int len;
+                    stream.Seek(0, SeekOrigin.Begin);
+                    stream.CopyTo(fileStream);
+                    //while ((len = stream.Read(buffer, 0, buffer.Length)) > 0)
+                    //{
+                    //    fileStream.Write(buffer, 0, len);
+                    //}    
+                }
+                stream.Close();
+
+                
+                Track trackRecord = new Track(id,"DOWNLOADED",fileName,DateTime.Now);
+                Program.daos.trackDAO.updateTrack(trackRecord);
+
+                currentlyFetching.Remove(id);
+            }
+            else
+            {
+                Program.logging.addToLog("Stream downloading thread signaled that it is finished downloading and stream is ready to be written to disk, but we cannot find stream for id " + id + " in list of being currently downloaded.");
+            }
         }
     }
 }

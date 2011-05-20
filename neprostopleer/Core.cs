@@ -146,7 +146,7 @@ namespace neprostopleer
                 seekpos = offset;
                 return true;
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 return false;
             }
@@ -181,6 +181,5 @@ namespace neprostopleer
             Bass.BASS_SetVolume(volume);
         }
 
-        public bool successiveCalls;
     }
 }

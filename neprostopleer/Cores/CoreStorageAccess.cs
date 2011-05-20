@@ -28,23 +28,31 @@ namespace neprostopleer.Cores
                 SQLiteCommand createCommand = new SQLiteCommand(_connection);
                 createCommand.CommandText = @"CREATE TABLE IF NOT EXISTS tracks('ID' TEXT NOT NULL, 'STATE' TEXT, 'DISKLOCATION' TEXT, 'FETCHTIME' INTEGER)";
                 createCommand.ExecuteNonQuery();
+                createCommand.Dispose();
+                createCommand = new SQLiteCommand(_connection);
+                createCommand.CommandText = @"CREATE UNIQUE INDEX IF NOT EXISTS tracks_id_idx ON tracks(ID)";
+                createCommand.ExecuteNonQuery();
             }
         }
         public SQLiteCommand GetCommand(string query)
         {
             if (_connection == null)
                 InitializeDatabaseAccess();
-            SQLiteCommand fetchcommand = new SQLiteCommand(_connection);
-
-            fetchcommand.CommandText = query;
+            SQLiteCommand fetchcommand = new SQLiteCommand(query, _connection);
             return fetchcommand;
         }
 
+        public String Escape(string input)
+        {
+            return null;
+        }
 
+        #pragma warning disable 0465
         protected void Finalize()
         {
             Dispose();
         }
+        #pragma warning restore 0465
 
         public void Dispose()
         {

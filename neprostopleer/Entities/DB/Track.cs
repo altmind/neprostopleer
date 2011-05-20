@@ -10,8 +10,8 @@ namespace neprostopleer.Entities.DB
         public string id;
         public string state;
         public string disklocation;
-        public Int64 fetchtime;
-        public Track(string id, string state, string disklocation, Int64 fetchtime)
+        public DateTime fetchtime;
+        public Track(string id, string state, string disklocation, DateTime fetchtime)
         {
             this.id = id;
             this.state = state;

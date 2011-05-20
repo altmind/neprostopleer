@@ -51,6 +51,7 @@
       <HintPath>ref\sqlite\bin\System.Data.SQLite.Linq.dll</HintPath>
     </Reference>
     <Reference Include="System.Management" />
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -68,12 +69,20 @@
     </Compile>
     <Compile Include="Core.cs" />
     <Compile Include="Cores\CoreDataProvider.cs" />
+    <Compile Include="Cores\CoreJSONBinder.cs" />
     <Compile Include="Cores\CoreProstopleerWebServices.cs" />
     <Compile Include="Cores\CoreStorageAccess.cs" />
     <Compile Include="Cores\CoreStreamer.cs" />
-    <Compile Include="Cores\FetchingCore.cs" />
+    <Compile Include="Cores\CoreUtils.cs" />
+    <Compile Include="Cores\DAO\DAOCommon.cs" />
+    <Compile Include="Cores\DAO\DAOs.cs" />
+    <Compile Include="Cores\DAO\IDAO.cs" />
+    <Compile Include="Cores\DAO\TrackDAO.cs" />
+    <Compile Include="Cores\CoreFetching.cs" />
     <Compile Include="Cores\CoreLogging.cs" />
     <Compile Include="Entities\DB\Track.cs" />
+    <Compile Include="Entities\WS\GetUrlResponse.cs" />
+    <Compile Include="Entities\WS\LoginResponse.cs" />
     <Compile Include="LogWindow.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -89,6 +98,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SoundException.cs" />
+    <Compile Include="Util\Behavior.cs" />
     <EmbeddedResource Include="LogWindow.resx">
       <DependentUpon>LogWindow.cs</DependentUpon>
     </EmbeddedResource>
@@ -120,6 +130,7 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

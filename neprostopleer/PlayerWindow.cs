@@ -20,7 +20,7 @@ namespace neprostopleer
 
         private void mainPlayPauseButton_Click(object sender, EventArgs e)
         {
-            
+            //
         }
 
         private void trackBar1_ValueChanged(object sender, EventArgs e)
@@ -65,6 +65,21 @@ namespace neprostopleer
         private void mainNextButton_Click(object sender, EventArgs e)
         {
             Program.prostopleerWebServices.InitializeWebServices();
+        }
+
+        private void mainStopButton_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show(Program.prostopleerWebServices.getUriForTrackId("46639890738").ToString());
+        }
+
+        private void PlayerWindow_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void mainPrevButton_Click(object sender, EventArgs e)
+        {
+            Program.streamer.GetStreamForId("46639890738");
         }
     }
 }

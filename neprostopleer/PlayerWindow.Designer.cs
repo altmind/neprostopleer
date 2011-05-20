@@ -55,6 +55,7 @@
             this.mainPrevButton.Size = new System.Drawing.Size(32, 25);
             this.mainPrevButton.TabIndex = 0;
             this.mainPrevButton.UseVisualStyleBackColor = true;
+            this.mainPrevButton.Click += new System.EventHandler(this.mainPrevButton_Click);
             // 
             // controlsImageList
             // 
@@ -101,6 +102,7 @@
             this.mainStopButton.Size = new System.Drawing.Size(30, 25);
             this.mainStopButton.TabIndex = 2;
             this.mainStopButton.UseVisualStyleBackColor = true;
+            this.mainStopButton.Click += new System.EventHandler(this.mainStopButton_Click);
             // 
             // mainNextButton
             // 
@@ -207,6 +209,7 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Name = "PlayerWindow";
             this.Text = "neprostopleer";
+            this.Load += new System.EventHandler(this.PlayerWindow_Load);
             ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).EndInit();
             this.ResumeLayout(false);
 
