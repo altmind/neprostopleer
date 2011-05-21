@@ -22,7 +22,6 @@ namespace neprostopleer.Cores
                 this.procUserClose(IntPtr.Zero);
                 seekPosition = 0L;
                 _currentlyPlayed = value;
-                procUserClose(IntPtr.Zero);
                 if (!String.IsNullOrWhiteSpace(value))
                     _currentlyPlayedStream = Program.streamer.GetStreamForId(value);
             }
@@ -40,7 +39,7 @@ namespace neprostopleer.Cores
 
         private long seekPosition;
 
-        private BASS_FILEPROCS bassStreamingProc;
+        public BASS_FILEPROCS bassStreamingProc { get; set; }
 
         public CoreDataProvider()
         {
@@ -56,7 +55,7 @@ namespace neprostopleer.Cores
         {
             if (currentlyPlayedStream != null)
             {
-                currentlyPlayedStream.Close();
+                //currentlyPlayedStream.Close();
                 _currentlyPlayed = null;
                 seekPosition = 0L;
             }
@@ -78,9 +77,11 @@ namespace neprostopleer.Cores
                 if (currentlyPlayedStream != null)
                 {
                     currentlyPlayedStream.Seek(seekPosition, SeekOrigin.Begin);
+                    
                     byte[] data = new byte[length];
 
                     int bytesread = currentlyPlayedStream.Read(data, 0, length);
+                    seekPosition = currentlyPlayedStream.Position;
 
                     Marshal.Copy(data, 0, buffer, bytesread);
                     return bytesread;

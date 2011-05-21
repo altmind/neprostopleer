@@ -74,15 +74,17 @@ namespace neprostopleer.Cores
             Uri uri = val.Item2;
             AutoResetEvent evt = val.Item3;
 
-            MemoryStream outStream = new MemoryStream();
-
-            currentlyFetching[id] = outStream;
-            evt.Set();
+            
 
             HttpWebRequest req = (HttpWebRequest)WebRequest.Create(uri);
             Stream stream = req.GetResponse().GetResponseStream();
 
-            //long contentLength = req.GetResponse().ContentLength;
+            byte[] storage = new byte[req.GetResponse().ContentLength];
+
+            MemoryStream outStream = new MemoryStream(storage);
+            currentlyFetching[id] = outStream;
+            evt.Set();
+            
 
             try
             {
@@ -99,7 +101,14 @@ namespace neprostopleer.Cores
             finally
             {
                 if (stream != null)
-                    stream.Close();
+                    try
+                    {
+                        stream.Close();
+                    }
+                    catch (Exception e)
+                    {
+                        Program.logging.processException(e);
+                    }
             }
 
         }
@@ -129,7 +138,7 @@ namespace neprostopleer.Cores
                     //    fileStream.Write(buffer, 0, len);
                     //}    
                 }
-                stream.Close();
+                //stream.Close();
 
                 
                 Track trackRecord = new Track(id,"DOWNLOADED",fileName,DateTime.Now);

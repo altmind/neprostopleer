@@ -7,32 +7,56 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using System.Management;
+using neprostopleer.Entities.Misc;
 
 namespace neprostopleer
 {
     public partial class PlayerWindow : Form
     {
+        
         public PlayerWindow()
         {
             InitializeComponent();
-            Program.playerWindow = this;
+            trackBar1_ValueChanged(trackBar1, null);
         }
 
-        private void mainPlayPauseButton_Click(object sender, EventArgs e)
+        public delegate void UpdateGUIStatusDelegate(PlayerProgressInformation info);
+        public void UpdateGUIStatus(PlayerProgressInformation info)
         {
             //
         }
 
+        private void mainPlayPauseButton_Click(object sender, EventArgs e)
+        {
+            //Program.provider.currentlyPlayed = "46639890738";
+            //Program.player.PlayId("2682613W56");
+            bool playing = Program.player.PlayPauseToggle();
+            Button clickedButton = (Button)sender;
+            if (playing)
+            {
+                clickedButton.ImageKey = "gtk-media-pause.png";
+            }
+            else
+            {
+                clickedButton.ImageKey = "gtk-media-play-ltr.png";
+            }
+        }
+
         private void trackBar1_ValueChanged(object sender, EventArgs e)
         {
-            //int value = ((TrackBar)sender).Value;
-            //int max = ((TrackBar)sender).Maximum;
-            //double percentValue = (value+0.0d) / max;
-            //Program.core.setVolume(percentValue);
+            if (Program.player != null)
+            {
+                int value = ((TrackBar)sender).Value;
+                int max = ((TrackBar)sender).Maximum;
+                double percentValue = (value + 0.0d) / max;
+                Program.player.Volume = percentValue;
+            }
         }
 
         private void mainPlaylistButton_Click(object sender, EventArgs e)
         {
+            Program.player.PlayId("2682613W56");
+            return;
             // use bcrypt
             ManagementObjectSearcher objMOS = new ManagementObjectSearcher("Select * from Win32_OperatingSystem");
             ManagementObjectCollection objMOC;
@@ -69,7 +93,7 @@ namespace neprostopleer
 
         private void mainStopButton_Click(object sender, EventArgs e)
         {
-            MessageBox.Show(Program.prostopleerWebServices.getUriForTrackId("46639890738").ToString());
+            Program.player.Stop();
         }
 
         private void PlayerWindow_Load(object sender, EventArgs e)
@@ -79,7 +103,7 @@ namespace neprostopleer
 
         private void mainPrevButton_Click(object sender, EventArgs e)
         {
-            Program.streamer.GetStreamForId("46639890738");
+            
         }
     }
 }

@@ -14,10 +14,14 @@ namespace neprostopleer
         public static LogWindow logWindow = null;
         public static CoreProstopleerWebServices prostopleerWebServices = new CoreProstopleerWebServices();
         public static CoreStreamer streamer = new CoreStreamer();
-        public static CoreDataProvider dataProvider = new CoreDataProvider();
+        // should be localized in coreplayer
+        //public static CoreDataProvider dataProvider = new CoreDataProvider();
         public static CoreLogging logging = new CoreLogging();
         public static CoreStorageAccess storage = new CoreStorageAccess();
         public static CoreJSONBinder binder = new CoreJSONBinder();
+
+        //public static CoreDataProvider provider = new CoreDataProvider();
+        public static CorePlayer player;
 
         public static DAOs daos = new DAOs();
         
@@ -30,7 +34,9 @@ namespace neprostopleer
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new PlayerWindow());
+            Program.playerWindow = new PlayerWindow();
+            Program.player = new CorePlayer();
+            Application.Run(Program.playerWindow);
         }
     }
 }

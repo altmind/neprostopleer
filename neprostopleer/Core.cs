@@ -61,7 +61,7 @@ namespace neprostopleer
                     Bass.BASS_ChannelPlay(stream, false);
             }
             else
-                throw new SoundException("Cannot play file");
+                throw new Exception("Cannot play file");
 
         }
         public void InitializeSound()
@@ -81,7 +81,7 @@ namespace neprostopleer
                     new FILESEEKPROC(MyFileProcUserSeek));
             }
             else
-                throw new SoundException("Cannot initialize sound");
+                throw new Exception("Cannot initialize sound");
         }
 
 

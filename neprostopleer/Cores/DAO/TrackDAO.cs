@@ -84,7 +84,7 @@ namespace neprostopleer.Cores.DAO
                     insertcommand.Parameters.AddWithValue("id", track.id);
                     insertcommand.Parameters.AddWithValue("state", track.state);
                     insertcommand.Parameters.AddWithValue("disklocation", track.disklocation);
-                    insertcommand.Parameters.AddWithValue("fetchtime", track.fetchtime.Ticks/1000000);
+                    insertcommand.Parameters.AddWithValue("fetchtime", track.fetchtime.Ticks/1000);
                     insertcommand.ExecuteNonQuery();
                 }
                 return false;
@@ -95,11 +95,14 @@ namespace neprostopleer.Cores.DAO
                 if (track.id != null)
                     sb.Append(" ID = '").Append(track.id).Append("'");
                 if (track.state != null)
+                    if (sb.Length != 0) sb.Append(" , ");
                     sb.Append(" STATE = '").Append(track.state).Append("'");
                 if (track.id != null)
+                    if (sb.Length != 0) sb.Append(" , ");
                     sb.Append(" DISKLOCATION = '").Append(track.disklocation).Append("'");
                 if (track.id != null)
-                    sb.Append(" FETCHTIME = '").Append(track.fetchtime.Ticks / 1000000).Append("'");
+                    if (sb.Length != 0) sb.Append(" , ");
+                    sb.Append(" FETCHTIME = '").Append(track.fetchtime.Ticks / 1000).Append("'");
                 if (sb.Length == 0)
                     throw new Exception("Cannot execute update when track object is fully nulled");
                 using (SQLiteCommand updatecommand = Program.storage.GetCommand("UPDATE OR REPLACE TRACKS SET "+sb.ToString()+" WHERE ID=:id"))
