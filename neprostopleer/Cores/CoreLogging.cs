@@ -31,6 +31,7 @@ namespace neprostopleer.Cores
             if (showWindow)
             {
                 Program.logWindow.Show();
+                Program.logWindow.logListBox1.SelectedIndex = Program.logWindow.logListBox1.Items.Count-1;
             }
         }
     }

@@ -5,7 +5,7 @@ using System.Text;
 
 namespace neprostopleer.Entities.Misc
 {
-    class PlayerProgressInformation
+    public class PlayerProgressInformation
     {
         public PlayState state;
         public int totalLength;

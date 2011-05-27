@@ -16,7 +16,9 @@ namespace neprostopleer.Cores
         private Stream CurrentStream { get; set; }
         private CoreDataProvider DataProvider { get; set; }
         private int BassStream { get; set; }
-        private BASSTimer BassTimer= null;
+        private BASSTimer BassTimer = null;
+        private TAG_INFO TagInfo { get; set; }
+
 
         //private int BassChannel { get; set; }
         public CorePlayer()
@@ -40,6 +42,7 @@ namespace neprostopleer.Cores
                     BassTimer = new BASSTimer(500);
                     BassTimer.Tick += new EventHandler(BassTimer_Tick);
                     SoundInitialized = true;
+                    TagInfo = new TAG_INFO();
                 }
                 else
                 {
@@ -52,13 +55,56 @@ namespace neprostopleer.Cores
 
         void BassTimer_Tick(object sender, EventArgs e)
         {
-            if (Bass.BASS_ChannelIsActive(BassStream) != BASSActive.BASS_ACTIVE_PLAYING)
+
+
+            PlayerProgressInformation progress = new PlayerProgressInformation();
+            BASSActive state = Bass.BASS_ChannelIsActive(BassStream);
+            if (state == BASSActive.BASS_ACTIVE_PLAYING)
             {
-                BassTimer.Stop();
+                progress.state = PlayState.PLAYING;
+            }
+            else if (state == BASSActive.BASS_ACTIVE_PAUSED)
+            {
+                progress.state = PlayState.PAUSED;
+            }
+            else if (state == BASSActive.BASS_ACTIVE_STOPPED)
+            {
+                progress.state = PlayState.STOPPED;
+            }
+            else if (state == BASSActive.BASS_ACTIVE_STALLED)
+            {
+                progress.state = PlayState.STALLED;
+            }
+
+            if (TagInfo != null)
+            {
+                progress.artist = TagInfo.artist;
+                progress.track = TagInfo.title;
+            }
+            double totaltime, elapsedtime;
+            if (state != BASSActive.BASS_ACTIVE_STOPPED)
+            {
+                long pos = Bass.BASS_ChannelGetPosition(BassStream); // position in bytes
+                long len = Bass.BASS_ChannelGetLength(BassStream); // length in bytes
+                totaltime = Bass.BASS_ChannelBytes2Seconds(BassStream, len); // the total time length
+                elapsedtime = Bass.BASS_ChannelBytes2Seconds(BassStream, pos); // the elapsed time length
             }
             else
             {
-                Program.playerWindow.Invoke(new neprostopleer.PlayerWindow.UpdateGUIStatusDelegate(UpdateGUIStatus),new object[] {new PlayerProgressInformation()});
+                totaltime = elapsedtime = 0;
+            }
+
+            
+
+            progress.totalLength = (int)totaltime;
+            progress.currentPosition = (int)elapsedtime;
+
+
+            Program.playerWindow.Invoke(new neprostopleer.PlayerWindow.UpdateGUIStatusDelegate(Program.playerWindow.UpdateGUIStatus), new object[] { progress });
+
+            if (Bass.BASS_ChannelIsActive(BassStream) != BASSActive.BASS_ACTIVE_PLAYING)
+            {
+                BassTimer.Stop();
             }
         }
 
@@ -67,6 +113,7 @@ namespace neprostopleer.Cores
             if (SoundInitialized)
             {
                 DataProvider.currentlyPlayed = id;
+                TagInfo = new TAG_INFO(); 
                 BassStream = Bass.BASS_StreamCreateFileUser(BASSStreamSystem.STREAMFILE_NOBUFFER, BASSFlag.BASS_STREAM_AUTOFREE, DataProvider.bassStreamingProc, IntPtr.Zero);
                 if (BassStream == 0)
                 {
@@ -74,7 +121,13 @@ namespace neprostopleer.Cores
 
                     throw new Exception("Cannot create stream: " + err.ToString());
                 }
-
+                if (BassTags.BASS_TAG_GetFromFile(BassStream, TagInfo))
+                {
+                    // nop
+                }
+                else
+                    Program.logging.addToLog("Cannot get tags for stream " + BassStream);
+                BassTimer.Start();
                 Bass.BASS_ChannelPlay(BassStream, false);
             }
         }
@@ -85,7 +138,7 @@ namespace neprostopleer.Cores
         {
             if (SoundInitialized)
             {
-                if (BassStream!=0)
+                if (BassStream != 0)
                     Bass.BASS_StreamFree(BassStream);
                 Bass.BASS_Free();
             }
@@ -114,12 +167,13 @@ namespace neprostopleer.Cores
         {
 
             if (!SoundInitialized || BassStream == 0) return false;
-            if (Bass.BASS_ChannelIsActive(BassStream)==BASSActive.BASS_ACTIVE_PAUSED)
+            if (Bass.BASS_ChannelIsActive(BassStream) == BASSActive.BASS_ACTIVE_PAUSED)
             {
                 if (!Bass.BASS_ChannelPlay(BassStream, false))
                 {
                     throw new Exception("Cannot resume playback: " + Bass.BASS_ErrorGetCode().ToString());
                 }
+                BassTimer.Start();
                 return true;
             }
             else
@@ -143,6 +197,8 @@ namespace neprostopleer.Cores
             {
                 Bass.BASS_StreamFree(BassStream);
                 BassStream = 0;
+                DataProvider.currentlyPlayedStream.Close();
+                TagInfo = new TAG_INFO(); 
             }
         }
 

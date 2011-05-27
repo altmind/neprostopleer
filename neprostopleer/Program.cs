@@ -10,6 +10,7 @@ namespace neprostopleer
     static class Program
     {
         //public static Core core = null;
+        public static CoreSettings settings = new CoreSettings();
         public static PlayerWindow playerWindow = null;
         public static LogWindow logWindow = null;
         public static CoreProstopleerWebServices prostopleerWebServices = new CoreProstopleerWebServices();

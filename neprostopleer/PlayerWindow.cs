@@ -21,9 +21,30 @@ namespace neprostopleer
         }
 
         public delegate void UpdateGUIStatusDelegate(PlayerProgressInformation info);
+
         public void UpdateGUIStatus(PlayerProgressInformation info)
         {
-            //
+            this.mainArtistLabel.Text = info.artist;
+            this.mainTrackLabel.Text = info.track;
+            this.mainProgressLabel.Text = (info.currentPosition / 60) + ":" + ((""+(info.currentPosition % 60)).PadLeft(2,'0'));
+            reflectPlayerStateInGUI(info.state);
+        }
+
+        private void reflectPlayerStateInGUI(PlayState playState)
+        {
+            if (playState.Equals(PlayState.PAUSED))
+            {
+                this.mainPlayPauseButton.ImageKey = "gtk-media-play-ltr.png";
+            }
+            else if (playState.Equals(PlayState.PLAYING))
+            {
+                this.mainPlayPauseButton.ImageKey = "gtk-media-pause.png";
+            }
+            else if (playState.Equals(PlayState.STOPPED))
+            {
+                //basically the same as paused
+                this.mainPlayPauseButton.ImageKey = "gtk-media-play-ltr.png";
+            }
         }
 
         private void mainPlayPauseButton_Click(object sender, EventArgs e)
@@ -58,32 +79,12 @@ namespace neprostopleer
             Program.player.PlayId("2682613W56");
             return;
             // use bcrypt
-            ManagementObjectSearcher objMOS = new ManagementObjectSearcher("Select * from Win32_OperatingSystem");
-            ManagementObjectCollection objMOC;
-
-            objMOC = objMOS.Get();
-            string serial=null;
-            string user = null;
-            foreach (ManagementObject objMO in objMOC)
-            {
-                serial = objMO["SerialNumber"].ToString();
-            }
-            
-
-            objMOS = new ManagementObjectSearcher("SELECT * FROM Win32_ComputerSystem");
-            objMOC = objMOS.Get();
-
-            foreach (ManagementObject objMO in objMOC)
-            {
-                user = objMO["UserName"].ToString();
-            }
-            MessageBox.Show(serial+" "+user);
-
         }
 
         private void mainSearchButton_Click(object sender, EventArgs e)
         {
-            Program.storage.InitializeDatabaseAccess();
+            Program.settings["pp_password"] = "LOL";
+            //Program.storage.InitializeDatabaseAccess();
         }
 
         private void mainNextButton_Click(object sender, EventArgs e)

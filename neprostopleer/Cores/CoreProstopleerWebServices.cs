@@ -42,7 +42,7 @@ namespace neprostopleer.Cores
                 if (cookieJar == null)
                 {
                     cookieJar = new CookieContainer();
-                    string postdata = "return_url=&login=&password=";
+                    string postdata = "return_url=&login=altmind&password=";
 
                     HttpWebRequest req_main = (HttpWebRequest)WebRequest.Create(PP_URI_MAIN);
                     req_main.Method = "GET";

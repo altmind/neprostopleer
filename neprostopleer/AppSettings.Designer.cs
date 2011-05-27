@@ -82,5 +82,53 @@ namespace neprostopleer {
                 this["ProtectedStorage"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string lastfm_password {
+            get {
+                return ((string)(this["lastfm_password"]));
+            }
+            set {
+                this["lastfm_password"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string lastfm_login {
+            get {
+                return ((string)(this["lastfm_login"]));
+            }
+            set {
+                this["lastfm_login"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string pp_password {
+            get {
+                return ((string)(this["pp_password"]));
+            }
+            set {
+                this["pp_password"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string pp_login {
+            get {
+                return ((string)(this["pp_login"]));
+            }
+            set {
+                this["pp_login"] = value;
+            }
+        }
     }
 }

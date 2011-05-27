@@ -68,6 +68,7 @@
     </Reference>
     <Reference Include="System.Management" />
     <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -86,6 +87,7 @@
     <Compile Include="Core.cs" />
     <Compile Include="Cores\CoreDataProvider.cs" />
     <Compile Include="Cores\CoreJSONBinder.cs" />
+    <Compile Include="Cores\CoreSettings.cs" />
     <Compile Include="Cores\CorePlayer.cs" />
     <Compile Include="Cores\CoreProstopleerWebServices.cs" />
     <Compile Include="Cores\CoreStorageAccess.cs" />
