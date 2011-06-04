@@ -8,15 +8,24 @@ using System.Text;
 using System.Windows.Forms;
 using System.Management;
 using neprostopleer.Entities.Misc;
+using neprostopleer.Cores;
 
 namespace neprostopleer
 {
-    public partial class PlayerWindow : Form
+    public partial class PlayerWindow : CoreSnappingForm
     {
-        
+
+        public PlaylistWindow PlaylistWindow { get; set; }
         public PlayerWindow()
         {
             InitializeComponent();
+            PlaylistWindow = new PlaylistWindow();
+            NativeWindow natRef = new NativeWindow();
+            natRef.AssignHandle(this.Handle);
+            PlaylistWindow.Show(natRef);
+            PlaylistWindow.Visible = false;
+            Rectangle ScreenBounds = Screen.FromHandle(this.Handle).Bounds;
+            Program.snappingManager.bounds[IntPtr.Zero] = ScreenBounds;
             trackBar1_ValueChanged(trackBar1, null);
         }
 
@@ -76,8 +85,12 @@ namespace neprostopleer
 
         private void mainPlaylistButton_Click(object sender, EventArgs e)
         {
-            Program.player.PlayId("2682613W56");
+            // TODO: Show should reference owner!
+            PlaylistWindow.Visible = !PlaylistWindow.Visible;
+            
             return;
+            Program.player.PlayId("2682613W56");
+            
             // use bcrypt
         }
 

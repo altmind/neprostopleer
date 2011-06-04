@@ -11,7 +11,7 @@ namespace neprostopleer.Cores.DAO
     class TrackDAO : IDAO
     {
 
-#pragma region Mass methods
+#region Mass methods
         public IList<Track> getTracksById(IList<string> ids)
         {
             IList<Track> outList = new List<Track>();
@@ -50,7 +50,7 @@ namespace neprostopleer.Cores.DAO
             }
             return outList;
         }
-#pragma endregion Mass methods
+#endregion Mass methods
 
         public Track getTrackById(string id)
         {

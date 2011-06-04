@@ -4,6 +4,8 @@ using System.Linq;
 using System.Windows.Forms;
 using neprostopleer.Cores;
 using neprostopleer.Cores.DAO;
+using neprostopleer.Natives;
+using System.Runtime.InteropServices;
 
 namespace neprostopleer
 {
@@ -25,6 +27,8 @@ namespace neprostopleer
         public static CorePlayer player;
 
         public static DAOs daos = new DAOs();
+
+        public static CoreSnappingManager snappingManager = new CoreSnappingManager();
         
 
         /// <summary>
@@ -35,9 +39,24 @@ namespace neprostopleer
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
+            performGlobalInitialization();
             Program.playerWindow = new PlayerWindow();
             Program.player = new CorePlayer();
             Application.Run(Program.playerWindow);
+        }
+
+        private static void performGlobalInitialization()
+        {
+            performUIInitialization();
+        }
+
+        private static void performUIInitialization()
+        {
+            // Show window contents while dragging: essential for snapping
+            if (!Natives.Natives.SystemParametersInfo(SPI.SPI_SETDRAGFULLWINDOWS, 1, null, 0))
+            {
+                Program.logging.addToLog("SystemParametersInfo SPI_SETDRAGFULLWINDOWS returned error. Win32Error:" + Marshal.GetLastWin32Error() + " HRESULT: " + Marshal.GetHRForLastWin32Error());
+            }
         }
     }
 }

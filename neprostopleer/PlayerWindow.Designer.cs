@@ -50,7 +50,7 @@
             this.mainPrevButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.mainPrevButton.ImageKey = "gtk-media-next-rtl.png";
             this.mainPrevButton.ImageList = this.controlsImageList;
-            this.mainPrevButton.Location = new System.Drawing.Point(4, 41);
+            this.mainPrevButton.Location = new System.Drawing.Point(4, 39);
             this.mainPrevButton.Name = "mainPrevButton";
             this.mainPrevButton.Size = new System.Drawing.Size(32, 25);
             this.mainPrevButton.TabIndex = 0;
@@ -84,7 +84,7 @@
             this.mainPlayPauseButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.mainPlayPauseButton.ImageKey = "gtk-media-play-ltr.png";
             this.mainPlayPauseButton.ImageList = this.controlsImageList;
-            this.mainPlayPauseButton.Location = new System.Drawing.Point(37, 41);
+            this.mainPlayPauseButton.Location = new System.Drawing.Point(37, 39);
             this.mainPlayPauseButton.Name = "mainPlayPauseButton";
             this.mainPlayPauseButton.Size = new System.Drawing.Size(51, 25);
             this.mainPlayPauseButton.TabIndex = 1;
@@ -97,7 +97,7 @@
             this.mainStopButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.mainStopButton.ImageKey = "gtk-media-stop.png";
             this.mainStopButton.ImageList = this.controlsImageList;
-            this.mainStopButton.Location = new System.Drawing.Point(89, 41);
+            this.mainStopButton.Location = new System.Drawing.Point(89, 39);
             this.mainStopButton.Name = "mainStopButton";
             this.mainStopButton.Size = new System.Drawing.Size(30, 25);
             this.mainStopButton.TabIndex = 2;
@@ -110,7 +110,7 @@
             this.mainNextButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.mainNextButton.ImageKey = "gtk-media-next-ltr.png";
             this.mainNextButton.ImageList = this.controlsImageList;
-            this.mainNextButton.Location = new System.Drawing.Point(120, 41);
+            this.mainNextButton.Location = new System.Drawing.Point(120, 39);
             this.mainNextButton.Name = "mainNextButton";
             this.mainNextButton.Size = new System.Drawing.Size(32, 25);
             this.mainNextButton.TabIndex = 3;
@@ -119,6 +119,8 @@
             // 
             // mainArtistLabel
             // 
+            this.mainArtistLabel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
             this.mainArtistLabel.AutoEllipsis = true;
             this.mainArtistLabel.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.mainArtistLabel.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
@@ -129,6 +131,8 @@
             // 
             // mainTrackLabel
             // 
+            this.mainTrackLabel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
             this.mainTrackLabel.AutoEllipsis = true;
             this.mainTrackLabel.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.mainTrackLabel.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
@@ -154,7 +158,7 @@
             this.mainSearchButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.mainSearchButton.ImageKey = "Search_24x24.png";
             this.mainSearchButton.ImageList = this.controlsImageList;
-            this.mainSearchButton.Location = new System.Drawing.Point(256, 41);
+            this.mainSearchButton.Location = new System.Drawing.Point(256, 39);
             this.mainSearchButton.Name = "mainSearchButton";
             this.mainSearchButton.Size = new System.Drawing.Size(30, 25);
             this.mainSearchButton.TabIndex = 7;
@@ -167,7 +171,7 @@
             this.mainPlaylistButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.mainPlaylistButton.ImageKey = "stock_text_right_modified_gray.png";
             this.mainPlaylistButton.ImageList = this.controlsImageList;
-            this.mainPlaylistButton.Location = new System.Drawing.Point(223, 41);
+            this.mainPlaylistButton.Location = new System.Drawing.Point(223, 39);
             this.mainPlaylistButton.Name = "mainPlaylistButton";
             this.mainPlaylistButton.Size = new System.Drawing.Size(30, 25);
             this.mainPlaylistButton.TabIndex = 8;
@@ -176,11 +180,10 @@
             // 
             // trackBar1
             // 
-            this.trackBar1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.trackBar1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.trackBar1.AutoSize = false;
             this.trackBar1.LargeChange = 15;
-            this.trackBar1.Location = new System.Drawing.Point(154, 42);
+            this.trackBar1.Location = new System.Drawing.Point(154, 40);
             this.trackBar1.Margin = new System.Windows.Forms.Padding(0);
             this.trackBar1.Maximum = 100;
             this.trackBar1.Name = "trackBar1";
@@ -195,7 +198,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(289, 67);
+            this.ClientSize = new System.Drawing.Size(289, 65);
             this.Controls.Add(this.trackBar1);
             this.Controls.Add(this.mainPlaylistButton);
             this.Controls.Add(this.mainSearchButton);
@@ -206,7 +209,9 @@
             this.Controls.Add(this.mainStopButton);
             this.Controls.Add(this.mainPlayPauseButton);
             this.Controls.Add(this.mainPrevButton);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow;
+            this.MaximumSize = new System.Drawing.Size(600, 89);
+            this.MinimumSize = new System.Drawing.Size(295, 89);
             this.Name = "PlayerWindow";
             this.Text = "neprostopleer";
             this.Load += new System.EventHandler(this.PlayerWindow_Load);

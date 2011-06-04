@@ -90,6 +90,9 @@
     <Compile Include="Cores\CoreSettings.cs" />
     <Compile Include="Cores\CorePlayer.cs" />
     <Compile Include="Cores\CoreProstopleerWebServices.cs" />
+    <Compile Include="Cores\CoreSnappingForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Cores\CoreStorageAccess.cs" />
     <Compile Include="Cores\CoreStreamer.cs" />
     <Compile Include="Cores\CoreUtils.cs" />
@@ -110,20 +113,37 @@
     <Compile Include="LogWindow.Designer.cs">
       <DependentUpon>LogWindow.cs</DependentUpon>
     </Compile>
+    <Compile Include="Natives\ANIMATIONINFO.cs" />
+    <Compile Include="Natives\RECT.cs" />
+    <Compile Include="Natives\SetWindowPosFlags.cs" />
+    <Compile Include="Natives\Natives.cs" />
+    <Compile Include="Natives\SPI.cs" />
+    <Compile Include="Natives\SPIF.cs" />
+    <Compile Include="Natives\WINDOWPOS.cs" />
     <Compile Include="PlayerWindow.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="PlayerWindow.Designer.cs">
       <DependentUpon>PlayerWindow.cs</DependentUpon>
     </Compile>
+    <Compile Include="PlaylistWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="PlaylistWindow.Designer.cs">
+      <DependentUpon>PlaylistWindow.cs</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Cores\CoreSnappingManager.cs" />
     <Compile Include="Util\Behavior.cs" />
     <EmbeddedResource Include="LogWindow.resx">
       <DependentUpon>LogWindow.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="PlayerWindow.resx">
       <DependentUpon>PlayerWindow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlaylistWindow.resx">
+      <DependentUpon>PlaylistWindow.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
